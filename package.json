@@ -1,0 +1,22 @@
+{
+  "name": "@preachjs/datepicker",
+  "version": "0.0.0",
+  "description": "Headless Datepickers for preact",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node build.js --dev",
+    "build": "node build.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@preact/signals": "^1.2.2",
+    "esbuild": "^0.20.2",
+    "preact": "^10.19.6"
+  },
+  "peerDependencies": {
+    "@preact/signals": ">=1.2.2",
+    "preact": ">=10"
+  }
+}

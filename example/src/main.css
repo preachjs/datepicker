@@ -1,0 +1,117 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui,
+    helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial,
+    sans-serif;
+}
+
+#app {
+  max-width: 80ch;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+
+.cal-container {
+  min-height: inherit;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.selected-text {
+  color: black;
+}
+
+.selected-text .header {
+  color: #adb5bd;
+  font-weight: 600;
+  letter-spacing: 0.025rem;
+}
+
+/* Calendar styles */
+
+.preachjs-calendar {
+  max-width: 350px;
+}
+
+.preachjs-calendar .preachjs-calendar--header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.preachjs-calendar .preachjs-calendar--header button {
+  background: transparent;
+  padding: 4px;
+  display: flex;
+  outline: black;
+  border: 0px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.preachjs-calendar .preachjs-calendar--header button:hover,
+.preachjs-calendar .preachjs-calendar--header button:focus {
+  background-color: #efefef;
+}
+
+.preachjs-calendar .preachjs-calendar--header h2 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.preachjs-calendar .preachjs-calendar--grid {
+  width: 100%;
+}
+
+.preachjs-calendar .preachjs-calendar--grid .preachjs-calendar--grid-header th {
+  text-align: center;
+  width: 2em;
+  height: 2em;
+}
+
+.preachjs-calendar
+  .preachjs-calendar--grid
+  .preachjs-calendar--grid-body
+  .preachjs-calendar--grid-cell {
+  text-align: center;
+  width: 2em;
+  height: 2em;
+}
+
+.preachjs-calendar
+  .preachjs-calendar--grid
+  .preachjs-calendar--grid-body
+  .preachjs-calendar--grid-cell
+  button {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  outline: none;
+  padding: 4px;
+  display: flex;
+  outline: none;
+  border: 0px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: 250ms all ease-in-out;
+}
+
+.preachjs-calendar
+  .preachjs-calendar--grid
+  .preachjs-calendar--grid-body
+  .preachjs-calendar--grid-cell
+  button:hover,
+.preachjs-calendar
+  .preachjs-calendar--grid
+  .preachjs-calendar--grid-body
+  .preachjs-calendar--grid-cell
+  button:focus {
+  color: white;
+  background: black;
+}
