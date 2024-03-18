@@ -2,15 +2,15 @@
   "name": "@preachjs/datepicker",
   "version": "0.0.0",
   "description": "Headless Datepickers for preact",
+  "license": "MIT",
+  "author": "",
   "type": "module",
   "main": "src/index.js",
   "scripts": {
-    "dev": "node build.js --dev",
     "build": "node build.js",
+    "dev": "node build.js --dev",
     "test:e2e": "npm run dev & wait-on http://127.0.0.1:8000/; npx cypress run"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@preact/signals": "^1.2.2",
     "cypress": "^13.7.0",
