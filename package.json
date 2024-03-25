@@ -5,7 +5,14 @@
   "license": "MIT",
   "author": "",
   "type": "module",
-  "main": "src/index.js",
+  "main": "./src/index.js",
+  "exports": "./src/index.js",
+  "files": [
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "example:build": "node build.js",
     "example:dev": "node build.js --dev",
