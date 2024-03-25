@@ -1,4 +1,22 @@
 describe("basic", () => {
+  it("Switch between modes", function () {
+    cy.visit("localhost:8000");
+
+    let content = cy.get(".selected-text");
+    content.should("have.text", "Selected: None");
+
+    // Switch to range
+    cy.get("[name=mode][value=range]").click();
+    content = cy.get(".selected-text");
+    content.should("have.text", "Selected Range: None - None");
+
+    // Switch to single
+    cy.get("[name=mode][value=single]").click();
+    content = cy.get(".selected-text");
+    content.should("not.have.text", "Selected Range: None - None");
+    content.should("have.text", "Selected: None");
+  });
+
   it("Basic Keyboard movement", function () {
     cy.visit("localhost:8000");
     cy.get('[data-row="1"][data-col="1"] > button').click();
