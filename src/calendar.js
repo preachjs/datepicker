@@ -1,4 +1,5 @@
 import { useSignal, useComputed } from "@preact/signals";
+import { useRef } from "preact/hooks";
 import {
   getWeekdayList,
   generateListOfDaysForMonthAndYear,
@@ -8,12 +9,14 @@ import {
 
 export function Calendar({
   value = new Date(),
+  mode = "single",
   onSelect = () => {},
   locale = "en-gb",
   weekdayFormat = "short",
   arrowLeft: ArrowLeft = () => <>&lt;</>,
   arrowRight: ArrowRight = () => <>&gt;</>,
 }) {
+  const refRange = useRef(Array.isArray(value) ? value : []);
   const activeDate$ = useSignal(new Date(value));
   const weekdays = getWeekdayList(locale, {
     format: weekdayFormat,
@@ -60,6 +63,7 @@ export function Calendar({
         aria-label={getMonthAndYearFromDate(activeDate$.value)}
         ref={(node) => {
           if (!node) return;
+          if (mode !== "single") return;
           node.addEventListener("keyup", (e) => {
             const isParentCell =
               Array.from(e.target.parentNode.classList.entries()).findIndex(
@@ -142,6 +146,30 @@ export function Calendar({
             return (
               <tr>
                 {dateRow.map((dateItem, colIndex) => {
+                  const isDateActive =
+                    (mode == "single" &&
+                      !Array.isArray(value) &&
+                      dateItem.date.getTime() === value.getTime()) ||
+                    false;
+
+                  let isRangeStart;
+                  let isRangeEnd;
+                  let isInRange;
+
+                  if (Array.isArray(value) && mode == "range") {
+                    isRangeStart =
+                      value[0] &&
+                      dateItem.date.getTime() === value[0].getTime();
+                    isRangeEnd =
+                      value[1] &&
+                      dateItem.date.getTime() === value[1].getTime();
+                    isInRange =
+                      value[0] &&
+                      value[1] &&
+                      dateItem.date.getTime() > value[0].getTime() &&
+                      dateItem.date.getTime() < value[1].getTime();
+                  }
+
                   if (dateItem.previousMonth || dateItem.nextMonth) {
                     return (
                       <td
@@ -149,7 +177,22 @@ export function Calendar({
                         data-row={rowIndex}
                         data-col={colIndex}
                         aria-disabled="true"
-                        class="preachjs-calendar--grid-cell"
+                        class={`preachjs-calendar--grid-cell
+                          ${isDateActive ? "active" : ""}
+                          ${
+                            isRangeStart
+                              ? "preachjs-calendar--grid-cell-start"
+                              : ""
+                          }
+                          ${
+                            isInRange
+                              ? "preachjs-calendar--grid-cell-in-range"
+                              : ""
+                          }
+                          ${
+                            isRangeEnd ? "preachjs-calendar--grid-cell-end" : ""
+                          }
+                        `}
                       >
                         <button style={{ flex: 1 }} disabled={true}>
                           {dateItem.date.getDate()}
@@ -162,11 +205,34 @@ export function Calendar({
                       data-row={rowIndex}
                       data-col={colIndex}
                       role="gridcell"
-                      class="preachjs-calendar--grid-cell"
+                      class={[
+                        "preachjs-calendar--grid-cell",
+                        isDateActive && "active",
+                        isRangeStart && "preachjs-calendar--grid-cell-start",
+                        isInRange && "preachjs-calendar--grid-cell-in-range",
+                        isRangeEnd && "preachjs-calendar--grid-cell-end",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
                     >
                       <button
                         onClick={() => {
-                          onSelect(dateItem.date);
+                          if (mode == "single") {
+                            onSelect(dateItem.date);
+                            return;
+                          }
+                          if (mode == "range") {
+                            refRange.current.push(dateItem.date);
+                            if (refRange.current.length == 2) {
+                              const selection = refRange.current.slice();
+                              refRange.current = [];
+                              onSelect(
+                                selection.sort(
+                                  (x, y) => x.getTime() > y.getTime()
+                                )
+                              );
+                            }
+                          }
                         }}
                         aria-label={formatToReadableDate(
                           dateItem.date,
