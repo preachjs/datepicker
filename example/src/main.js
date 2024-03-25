@@ -41,7 +41,6 @@ const App = () => {
           mode={mode.value}
           value={selectedDate.value}
           onSelect={(value) => {
-            console.log({ v: selectedDate.value });
             selectedDate.value = value;
           }}
           weekdayFormat="narrow"
