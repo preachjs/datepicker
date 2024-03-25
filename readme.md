@@ -3,11 +3,19 @@
 > Headless Datepicker(s) for preact
 
 - [@preachjs/datepicker](#preachjsdatepicker)
+  - [Highlights](#highlights)
   - [Usage](#usage)
     - [Simple Inline Datepicker](#simple-inline-datepicker)
     - [Create a range select date picker](#create-a-range-select-date-picker)
     - [API](#api)
   - [License](#license)
+
+## Highlights
+
+- Lightweight
+- Unstyled
+- Fast and runs on signals
+- For [Preact](https://preactjs.com/)! <3
 
 ## Usage
 
