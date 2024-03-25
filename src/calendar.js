@@ -202,6 +202,14 @@ export function Calendar({
                       dateItem.date.getTime() === value[1].getTime();
                   }
 
+                  const gridCellStyles = [
+                    "preachjs-calendar--grid-cell",
+                    isDateActive && "active",
+                    isRangeStart && "preachjs-calendar--grid-cell-start",
+                    isInRange && "preachjs-calendar--grid-cell-in-range",
+                    isRangeEnd && "preachjs-calendar--grid-cell-end",
+                  ];
+
                   if (dateItem.previousMonth || dateItem.nextMonth) {
                     return (
                       <td
@@ -209,16 +217,10 @@ export function Calendar({
                         data-row={rowIndex}
                         data-col={colIndex}
                         aria-disabled="true"
-                        class={[
-                          "preachjs-calendar--grid-cell",
-                          "preachjs-calendar--grid-cell-disabled",
-                          isDateActive && "active",
-                          isRangeStart && "preachjs-calendar--grid-cell-start",
-                          isInRange && "preachjs-calendar--grid-cell-in-range",
-                          isRangeEnd && "preachjs-calendar--grid-cell-end",
-                        ]
-                          .filter(Boolean)
-                          .join(" ")}
+                        class={mergeStyle(
+                          gridCellStyles,
+                          "preachjs-calendar--grid-cell-disabled"
+                        )}
                       >
                         <button style={{ flex: 1 }} disabled={true}>
                           {dateItem.date.getDate()}
@@ -232,15 +234,7 @@ export function Calendar({
                       data-col={colIndex}
                       data-date={dateItem.date.toISOString()}
                       role="gridcell"
-                      class={[
-                        "preachjs-calendar--grid-cell",
-                        isDateActive && "active",
-                        isRangeStart && "preachjs-calendar--grid-cell-start",
-                        isInRange && "preachjs-calendar--grid-cell-in-range",
-                        isRangeEnd && "preachjs-calendar--grid-cell-end",
-                      ]
-                        .filter(Boolean)
-                        .join(" ")}
+                      class={mergeStyle(gridCellStyles, "")}
                     >
                       <button
                         onClick={() => {
@@ -263,26 +257,7 @@ export function Calendar({
                               selecting.current = false;
                             } else {
                               rangeHovering$.value = null;
-                              window.addEventListener(
-                                "mousemove",
-                                (e) => {
-                                  const elm = document.elementFromPoint(
-                                    e.clientX,
-                                    e.clientY
-                                  );
-
-                                  const nearbyCell = elm.closest(
-                                    ".preachjs-calendar--grid-cell"
-                                  );
-                                  if (!nearbyCell) return;
-                                  rangeHovering$.value = new Date(
-                                    nearbyCell.dataset.date
-                                  );
-                                },
-                                {
-                                  passive: true,
-                                }
-                              );
+                              tieHoveredElmToSignal(window, rangeHovering$);
                             }
                           }
                         }}
@@ -303,4 +278,24 @@ export function Calendar({
       </table>
     </div>
   );
+}
+
+function tieHoveredElmToSignal(window, sign$) {
+  window.addEventListener(
+    "mousemove",
+    (e) => {
+      const elm = document.elementFromPoint(e.clientX, e.clientY);
+
+      const nearbyCell = elm.closest(".preachjs-calendar--grid-cell");
+      if (!nearbyCell) return;
+      sign$.value = new Date(nearbyCell.dataset.date);
+    },
+    {
+      passive: true,
+    }
+  );
+}
+
+function mergeStyle(arr, ...additional) {
+  return additional.filter(Boolean).concat(arr.filter(Boolean)).join(" ");
 }
