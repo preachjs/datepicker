@@ -21,6 +21,7 @@ if (isDev) {
   await ctx.watch();
   setTimeout(() => {
     ctx.serve({
+      port: 8000,
       servedir: "./example",
     });
   }, 100);
