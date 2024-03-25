@@ -37,7 +37,6 @@ const App = () => {
           </label>
         </div>
         <Calendar
-          locale="ban-id"
           mode={mode.value}
           value={selectedDate.value}
           onSelect={(value) => {
