@@ -73,6 +73,7 @@ body {
 
 .preachjs-calendar .preachjs-calendar--grid {
   width: 100%;
+  border-collapse: collapse;
 }
 
 .preachjs-calendar .preachjs-calendar--grid .preachjs-calendar--grid-header th {
@@ -131,6 +132,10 @@ body {
 .preachjs-calendar
   .preachjs-calendar--grid
   .preachjs-calendar--grid-body
+  .preachjs-calendar--grid-cell.preachjs-calendar--grid-cell-start,
+.preachjs-calendar
+  .preachjs-calendar--grid
+  .preachjs-calendar--grid-body
   .preachjs-calendar--grid-cell.preachjs-calendar--grid-cell-start
   button {
   border-radius: 0px;
@@ -149,6 +154,10 @@ body {
   background: #efefef;
 }
 
+.preachjs-calendar
+  .preachjs-calendar--grid
+  .preachjs-calendar--grid-body
+  .preachjs-calendar--grid-cell.preachjs-calendar--grid-cell-end,
 .preachjs-calendar
   .preachjs-calendar--grid
   .preachjs-calendar--grid-body
