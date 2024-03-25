@@ -89,3 +89,15 @@ export function formatToWeekday(date, locale = "en-gb", options = {}) {
 export function formatToReadableDate(date, locale = "en-gb") {
   return Intl.DateTimeFormat(locale).format(date);
 }
+
+export function getDatesInRange(allDates, startDate, endDate) {
+  return allDates.filter((d) => isDateInRange(d, startDate, endDate));
+}
+
+export function isDateInRange(source, start, end) {
+  return start.getTime() < source.getTime() && end.getTime() > source.getTime();
+}
+
+export function sortByDate(x, y) {
+  return x.getTime() > y.getTime();
+}

@@ -5,6 +5,8 @@ import {
   generateListOfDaysForMonthAndYear,
   getMonthAndYearFromDate,
   formatToReadableDate,
+  getDatesInRange,
+  sortByDate,
 } from "./utils";
 
 export function Calendar({
@@ -16,11 +18,15 @@ export function Calendar({
   arrowLeft: ArrowLeft = () => <>&lt;</>,
   arrowRight: ArrowRight = () => <>&gt;</>,
 }) {
-  const refRange = useRef(Array.isArray(value) ? value : []);
+  const selecting = useRef(false);
+  const refRange$ = useSignal([]);
   const activeDate$ = useSignal(new Date(value));
+  const rangeHovering$ = useSignal(null);
+
   const weekdays = getWeekdayList(locale, {
     format: weekdayFormat,
   });
+
   const possibleDates = useComputed(() => {
     const activeDate = activeDate$.value;
     return generateListOfDaysForMonthAndYear(
@@ -30,6 +36,31 @@ export function Calendar({
         weekdays: weekdays,
       }
     );
+  });
+
+  const justDates = useComputed(() =>
+    possibleDates.value.map((d) => d.map((x) => x.date)).flat(2)
+  );
+
+  const datesInSelectionRange = (() => {
+    if (Array.isArray(value) && value?.length == 2 && !selecting.current)
+      return getDatesInRange(justDates.value, value[0], value[1]);
+    return [];
+  })();
+
+  const datesInHoverRange$ = useComputed(() => {
+    const allDates = justDates.value;
+    if (
+      rangeHovering$.value &&
+      refRange$.value.length == 1 &&
+      mode == "range"
+    ) {
+      const sorted = [refRange$.value[0], rangeHovering$.value].sort(
+        sortByDate
+      );
+      return getDatesInRange(allDates, sorted[0], sorted[1]);
+    }
+    return [];
   });
 
   return (
@@ -154,20 +185,21 @@ export function Calendar({
 
                   let isRangeStart;
                   let isRangeEnd;
-                  let isInRange;
+                  let isInRange =
+                    datesInSelectionRange.includes(dateItem.date) ||
+                    datesInHoverRange$.value.includes(dateItem.date);
 
-                  if (Array.isArray(value) && mode == "range") {
+                  if (
+                    Array.isArray(value) &&
+                    mode == "range" &&
+                    !selecting.current
+                  ) {
                     isRangeStart =
                       value[0] &&
                       dateItem.date.getTime() === value[0].getTime();
                     isRangeEnd =
                       value[1] &&
                       dateItem.date.getTime() === value[1].getTime();
-                    isInRange =
-                      value[0] &&
-                      value[1] &&
-                      dateItem.date.getTime() > value[0].getTime() &&
-                      dateItem.date.getTime() < value[1].getTime();
                   }
 
                   if (dateItem.previousMonth || dateItem.nextMonth) {
@@ -177,22 +209,16 @@ export function Calendar({
                         data-row={rowIndex}
                         data-col={colIndex}
                         aria-disabled="true"
-                        class={`preachjs-calendar--grid-cell
-                          ${isDateActive ? "active" : ""}
-                          ${
-                            isRangeStart
-                              ? "preachjs-calendar--grid-cell-start"
-                              : ""
-                          }
-                          ${
-                            isInRange
-                              ? "preachjs-calendar--grid-cell-in-range"
-                              : ""
-                          }
-                          ${
-                            isRangeEnd ? "preachjs-calendar--grid-cell-end" : ""
-                          }
-                        `}
+                        class={[
+                          "preachjs-calendar--grid-cell",
+                          "preachjs-calendar--grid-cell-disabled",
+                          isDateActive && "active",
+                          isRangeStart && "preachjs-calendar--grid-cell-start",
+                          isInRange && "preachjs-calendar--grid-cell-in-range",
+                          isRangeEnd && "preachjs-calendar--grid-cell-end",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
                       >
                         <button style={{ flex: 1 }} disabled={true}>
                           {dateItem.date.getDate()}
@@ -204,6 +230,7 @@ export function Calendar({
                     <td
                       data-row={rowIndex}
                       data-col={colIndex}
+                      data-date={dateItem.date.toISOString()}
                       role="gridcell"
                       class={[
                         "preachjs-calendar--grid-cell",
@@ -217,19 +244,44 @@ export function Calendar({
                     >
                       <button
                         onClick={() => {
+                          selecting.current = true;
                           if (mode == "single") {
                             onSelect(dateItem.date);
+                            selecting.current = false;
                             return;
                           }
                           if (mode == "range") {
-                            refRange.current.push(dateItem.date);
-                            if (refRange.current.length == 2) {
-                              const selection = refRange.current.slice();
-                              refRange.current = [];
+                            refRange$.value.push(dateItem.date);
+                            if (refRange$.value.length == 2) {
+                              const selection = refRange$.value.slice();
+                              refRange$.value = [];
                               onSelect(
                                 selection.sort(
                                   (x, y) => x.getTime() > y.getTime()
                                 )
+                              );
+                              selecting.current = false;
+                            } else {
+                              rangeHovering$.value = null;
+                              window.addEventListener(
+                                "mousemove",
+                                (e) => {
+                                  const elm = document.elementFromPoint(
+                                    e.clientX,
+                                    e.clientY
+                                  );
+
+                                  const nearbyCell = elm.closest(
+                                    ".preachjs-calendar--grid-cell"
+                                  );
+                                  if (!nearbyCell) return;
+                                  rangeHovering$.value = new Date(
+                                    nearbyCell.dataset.date
+                                  );
+                                },
+                                {
+                                  passive: true,
+                                }
                               );
                             }
                           }
