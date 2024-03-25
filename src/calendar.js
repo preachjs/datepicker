@@ -14,7 +14,7 @@ export function Calendar({
   mode = "single",
   onSelect = () => {},
   locale = "en-gb",
-  weekdayFormat = "short",
+  weekdayFormat = "narrow",
   arrowLeft: ArrowLeft = () => <>&lt;</>,
   arrowRight: ArrowRight = () => <>&gt;</>,
 }) {
