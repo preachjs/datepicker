@@ -20,6 +20,13 @@ body {
   align-items: center;
 }
 
+.cal-mode-selection {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
 .selected-text {
   color: black;
 }
@@ -111,7 +118,46 @@ body {
   .preachjs-calendar--grid
   .preachjs-calendar--grid-body
   .preachjs-calendar--grid-cell
-  button:focus {
+  button:focus,
+.preachjs-calendar
+  .preachjs-calendar--grid
+  .preachjs-calendar--grid-body
+  .preachjs-calendar--grid-cell.active
+  button {
   color: white;
   background: black;
+}
+
+.preachjs-calendar
+  .preachjs-calendar--grid
+  .preachjs-calendar--grid-body
+  .preachjs-calendar--grid-cell.preachjs-calendar--grid-cell-start
+  button {
+  border-radius: 0px;
+  border-right: 0px;
+  background: black;
+  color: white;
+  border-radius: 0px;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.preachjs-calendar
+  .preachjs-calendar--grid
+  .preachjs-calendar--grid-body
+  .preachjs-calendar--grid-cell.preachjs-calendar--grid-cell-in-range {
+  background: #efefef;
+}
+
+.preachjs-calendar
+  .preachjs-calendar--grid
+  .preachjs-calendar--grid-body
+  .preachjs-calendar--grid-cell.preachjs-calendar--grid-cell-end
+  button {
+  background: black;
+  color: white;
+  border-radius: 0px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-left: 0px;
 }
