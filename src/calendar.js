@@ -43,7 +43,12 @@ export function Calendar({
   );
 
   const datesInSelectionRange = (() => {
-    if (Array.isArray(value) && value?.length == 2 && !selecting.current)
+    if (
+      mode == "range" &&
+      Array.isArray(value) &&
+      value?.length == 2 &&
+      !selecting.current
+    )
       return getDatesInRange(justDates.value, value[0], value[1]);
     return [];
   })();
