@@ -68,10 +68,13 @@ export function Calendar({
     return [];
   });
 
+  let tabIndexOffset = 3;
+
   return (
     <div class="preachjs-calendar">
       <div class="preachjs-calendar--header">
         <button
+          tabIndex={1}
           aria-label="Previous"
           onClick={() => {
             const curr = new Date(activeDate$.value);
@@ -83,6 +86,7 @@ export function Calendar({
         </button>
         <h2 aria-hidden="true">{getMonthAndYearFromDate(activeDate$.value)}</h2>
         <button
+          tabIndex={2}
           aria-label="Next"
           onClick={() => {
             const curr = new Date(activeDate$.value);
@@ -96,79 +100,9 @@ export function Calendar({
       <table
         class="preachjs-calendar--grid"
         role="grid"
+        autofocus={true}
+        tabIndex={3}
         aria-label={getMonthAndYearFromDate(activeDate$.value)}
-        ref={(node) => {
-          if (!node) return;
-          if (mode !== "single") return;
-          node.addEventListener("keyup", (e) => {
-            const isParentCell =
-              Array.from(e.target.parentNode.classList.entries()).findIndex(
-                (d) => d[1] == "preachjs-calendar--grid-cell"
-              ) > -1;
-            const isCell =
-              Array.from(e.target.classList.entries()).findIndex(
-                (d) => d[1] == "preachjs-calendar--grid-cell"
-              ) > -1;
-
-            if (!(isCell || isParentCell)) return;
-
-            const CellTarget = isParentCell ? e.target.parentNode : e.target;
-            const currentRow = +CellTarget.dataset.row;
-            const currentCol = +CellTarget.dataset.col;
-
-            switch (e.code) {
-              case "ArrowDown": {
-                const elem = e.target
-                  .closest(".preachjs-calendar--grid-body")
-                  .querySelector(
-                    `[data-row='${currentRow + 1}'][data-col='${currentCol}']`
-                  );
-                elem?.querySelector("button").focus();
-                break;
-              }
-              case "ArrowUp": {
-                const elem = e.target
-                  .closest(".preachjs-calendar--grid-body")
-                  .querySelector(
-                    `[data-row='${currentRow - 1}'][data-col='${currentCol}']`
-                  );
-                elem?.querySelector("button").focus();
-                break;
-              }
-
-              case "ArrowRight": {
-                let changedCol = currentCol + 1;
-                let changedRow = currentRow;
-                if (changedCol > 6) {
-                  changedRow += 1;
-                  changedCol = 0;
-                }
-                const elem = e.target
-                  .closest(".preachjs-calendar--grid-body")
-                  .querySelector(
-                    `[data-row='${changedRow}'][data-col='${changedCol}']`
-                  );
-                elem?.querySelector("button").focus();
-                break;
-              }
-              case "ArrowLeft": {
-                let changedCol = currentCol - 1;
-                let changedRow = currentRow;
-                if (changedCol < 0) {
-                  changedRow -= 1;
-                  changedCol = 6;
-                }
-                const elem = e.target
-                  .closest(".preachjs-calendar--grid-body")
-                  .querySelector(
-                    `[data-row='${changedRow}'][data-col='${changedCol}']`
-                  );
-                elem?.querySelector("button").focus();
-                break;
-              }
-            }
-          });
-        }}
       >
         <thead class="preachjs-calendar--grid-header">
           <tr>
@@ -226,6 +160,8 @@ export function Calendar({
                           gridCellStyles,
                           "preachjs-calendar--grid-cell-disabled"
                         )}
+                        tabIndex={colIndex + tabIndexOffset + 7 * rowIndex}
+                        ref={createKeypressHandler(mode)}
                       >
                         <button style={{ flex: 1 }} disabled={true}>
                           {dateItem.date.getDate()}
@@ -235,6 +171,8 @@ export function Calendar({
                   }
                   return (
                     <td
+                      ref={createKeypressHandler(mode)}
+                      tabIndex={colIndex + tabIndexOffset + 7 * rowIndex}
                       data-row={rowIndex}
                       data-col={colIndex}
                       data-date={dateItem.date.toISOString()}
@@ -283,6 +221,86 @@ export function Calendar({
       </table>
     </div>
   );
+}
+
+function createKeypressHandler(mode) {
+  return (node) => {
+    if (!node) return;
+    if (mode !== "single") return;
+    node.addEventListener("keyup", (e) => {
+      const isParentCell =
+        Array.from(e.target.parentNode.classList.entries()).findIndex(
+          (d) => d[1] == "preachjs-calendar--grid-cell"
+        ) > -1;
+      const isCell =
+        Array.from(e.target.classList.entries()).findIndex(
+          (d) => d[1] == "preachjs-calendar--grid-cell"
+        ) > -1;
+
+      if (!(isCell || isParentCell)) return;
+
+      const CellTarget = isParentCell ? e.target.parentNode : e.target;
+      const currentRow = +CellTarget.dataset.row;
+      const currentCol = +CellTarget.dataset.col;
+      console.log({ k: e.key });
+      switch (e.key) {
+        case "ArrowDown": {
+          const elem = e.target
+            .closest(".preachjs-calendar--grid-body")
+            .querySelector(
+              `[data-row='${currentRow + 1}'][data-col='${currentCol}']`
+            );
+          elem?.querySelector("button").focus();
+          break;
+        }
+        case "ArrowUp": {
+          const elem = e.target
+            .closest(".preachjs-calendar--grid-body")
+            .querySelector(
+              `[data-row='${currentRow - 1}'][data-col='${currentCol}']`
+            );
+          elem?.querySelector("button").focus();
+          break;
+        }
+        case "ArrowRight": {
+          let changedCol = currentCol + 1;
+          let changedRow = currentRow;
+          if (changedCol > 6) {
+            changedRow += 1;
+            changedCol = 0;
+          }
+          const elem = e.target
+            .closest(".preachjs-calendar--grid-body")
+            .querySelector(
+              `[data-row='${changedRow}'][data-col='${changedCol}']`
+            );
+          elem?.querySelector("button").focus();
+          break;
+        }
+        case "ArrowLeft": {
+          let changedCol = currentCol - 1;
+          let changedRow = currentRow;
+          if (changedCol < 0) {
+            changedRow -= 1;
+            changedCol = 6;
+          }
+          const elem = e.target
+            .closest(".preachjs-calendar--grid-body")
+            .querySelector(
+              `[data-row='${changedRow}'][data-col='${changedCol}']`
+            );
+          elem?.querySelector("button").focus();
+          break;
+        }
+        case " ":
+        case "Enter": {
+          const elem = e.target.closest(`[data-row][data-col]`);
+          elem?.querySelector("button").click();
+          break;
+        }
+      }
+    });
+  };
 }
 
 function tieHoveredElmToSignal(window, sign$) {
