@@ -9,6 +9,10 @@ import {
   sortByDate,
 } from "./utils";
 
+/**
+ * @param {import("./calendar").CalendarProps} props
+ * @returns
+ */
 export function Calendar({
   value = new Date(),
   mode = "single",
