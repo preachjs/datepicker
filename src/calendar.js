@@ -128,17 +128,19 @@ export function Calendar({
                     datesInSelectionRange.includes(dateItem.date) ||
                     datesInHoverRange$.value.includes(dateItem.date);
 
-                  if (
-                    Array.isArray(value) &&
-                    mode == "range" &&
-                    !selecting.current
-                  ) {
-                    isRangeStart =
-                      value[0] &&
-                      dateItem.date.getTime() === value[0].getTime();
-                    isRangeEnd =
-                      value[1] &&
-                      dateItem.date.getTime() === value[1].getTime();
+                  if (mode == "range") {
+                    if (refRange$.value.length && selecting.current) {
+                      isRangeStart =
+                        dateItem.date.getTime() ===
+                        refRange$.value[0].getTime();
+                    } else if (Array.isArray(value) && !selecting.current) {
+                      isRangeStart =
+                        value[0] &&
+                        dateItem.date.getTime() === value[0].getTime();
+                      isRangeEnd =
+                        value[1] &&
+                        dateItem.date.getTime() === value[1].getTime();
+                    }
                   }
 
                   const gridCellStyles = [
