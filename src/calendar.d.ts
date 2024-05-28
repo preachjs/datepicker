@@ -1,8 +1,17 @@
-export type CalendarProps = {
-    value?: Date | undefined;
-    mode?: string | undefined;
-    onSelect?: (() => void) | undefined;
-    weekdayFormat?: string | undefined;
-    arrowLeft?: (() => any) | undefined;
-    arrowRight?: (() => any) | undefined;
+type CalendarValues = {
+  single: Date
+  range: [Date, Date]
+}
+
+export type CalendarValue<M extends CalendarMode = CalendarMode> = CalendarValues[M]
+
+export type CalendarMode = "single" | "range"
+
+export type CalendarProps<M extends CalendarMode = CalendarMode> = {
+  value?: CalendarValue<M>
+  weekdayFormat?: "narrow" | "short" | "long"
+  arrowLeft?: () => any
+  arrowRight?: () => any
+  mode?: M
+  onSelect?: (nextValue: CalendarValue<M>) => void
 }
