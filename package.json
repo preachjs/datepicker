@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Headless Datepickers for preact",
   "license": "MIT",
-  "author": "",
+  "author": "reaper <ahoy@barelyhuman.dev>",
   "type": "module",
   "main": "./src/index.js",
   "exports": "./src/index.js",
