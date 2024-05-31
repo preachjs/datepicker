@@ -1,5 +1,5 @@
 import { signal } from "@preact/signals";
-import { Calendar } from "../../src/index.js";
+import { Calendar } from "../../src/index";
 import { render } from "preact";
 import "./main.css";
 

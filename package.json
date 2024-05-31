@@ -5,8 +5,8 @@
   "license": "MIT",
   "author": "reaper <ahoy@barelyhuman.dev>",
   "type": "module",
-  "main": "./src/index.js",
-  "exports": "./src/index.js",
+  "main": "./src/index.jsx",
+  "exports": "./src/index.jsx",
   "types": "./src/index.d.ts",
   "files": [
     "src"

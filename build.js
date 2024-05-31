@@ -4,7 +4,7 @@ const args = process.argv.slice();
 const isDev = args.includes("--dev");
 
 const ctx = await esbuild.context({
-  entryPoints: ["./example/src/main.js"],
+  entryPoints: ["./example/src/main.jsx"],
   format: "esm",
   bundle: true,
   logLevel: "info",
@@ -12,9 +12,6 @@ const ctx = await esbuild.context({
   outdir: "example/dist",
   jsx: "automatic",
   jsxImportSource: "preact",
-  loader: {
-    ".js": "jsx",
-  },
 });
 
 if (isDev) {
