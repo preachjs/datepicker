@@ -7,9 +7,10 @@
   "type": "module",
   "main": "./dist/index.js",
   "exports": "./dist/index.js",
-  "types": "./src/index.d.ts",
+  "types": "./dist/index.d.ts",
   "files": [
-    "src"
+    "src",
+    "dist"
   ],
   "publishConfig": {
     "access": "public"
