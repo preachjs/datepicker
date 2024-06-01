@@ -19,14 +19,18 @@
     "example:build": "node build.js",
     "example:dev": "node build.js --dev",
     "test:e2e": "npm run example:dev & wait-on http://127.0.0.1:8000/; npx cypress run; kill %%",
-    "next": "bumpp"
+    "next": "bumpp",
+    "fix": "prettier --write ."
   },
+  "prettier": "@barelyhuman/prettier-config",
   "devDependencies": {
+    "@barelyhuman/prettier-config": "^1.1.0",
     "@preact/signals": "^1.2.2",
     "bumpp": "^9.4.1",
     "cypress": "^13.7.0",
     "esbuild": "^0.20.2",
     "preact": "^10.19.6",
+    "prettier": "^3.2.5",
     "typescript": "^5.4.5",
     "wait-on": "^7.2.0"
   },

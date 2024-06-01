@@ -28,34 +28,34 @@ npm i preact @preachjs/datepicker @preact/signals
 ### Simple Inline Datepicker
 
 ```js
-import { Calendar } from "@preachjs/datepicker";
+import { Calendar } from '@preachjs/datepicker'
 
 function App() {
-  const [date, setDate] = useState();
+  const [date, setDate] = useState()
   return (
     <>
-      <Calendar value={date} onSelect={(nextValue) => setDate(nextValue)} />
+      <Calendar value={date} onSelect={nextValue => setDate(nextValue)} />
     </>
-  );
+  )
 }
 ```
 
 ### Create a range select date picker
 
 ```tsx
-import { Calendar } from "@preachjs/datepicker";
+import { Calendar } from '@preachjs/datepicker'
 
 function App() {
-  const [dateRange, setDateRange] = useState([]);
+  const [dateRange, setDateRange] = useState([])
   return (
     <>
       <Calendar
         mode="range"
         value={dateRange}
-        onSelect={(nextValue) => setDateRange(nextValue)}
+        onSelect={nextValue => setDateRange(nextValue)}
       />
     </>
-  );
+  )
 }
 ```
 
