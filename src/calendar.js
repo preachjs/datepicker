@@ -7,7 +7,7 @@ import {
   formatToReadableDate,
   getDatesInRange,
   sortByDate,
-} from './utils'
+} from './utils.js'
 
 /**
  * @param {import("./calendar").CalendarProps} props
