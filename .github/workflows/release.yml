@@ -41,13 +41,13 @@ jobs:
       - name: Tag Beta
         if: 'contains("${{steps.get-package-version.outputs.version}}", "-beta")'
         run: |
-          npm dist-tags add ${{steps.get-package-version.outputs.version}} --tag beta
+          npm dist-tags add @preachjs/datepicker@${{steps.get-package-version.outputs.version}} --tag beta
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Tag Release
         if: "!(contains('{{steps.get-package-version.outputs.version}}','-beta'))"
         run: |
-          npm dist-tags add {{steps.get-package-version.outputs.version}} --tag latest
+          npm dist-tags add @preachjs/datepicker@{{steps.get-package-version.outputs.version}} --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
