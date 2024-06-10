@@ -43,7 +43,7 @@ jobs:
       
       - name: PR Message
         uses: mshick/add-pr-comment@v2
-        if: contains(steps.get-package-version.outputs.version, '-beta') 
+        if: contains(steps.get-package-version.outputs.version, '-beta') && github.event_name == 'pull_request'
         with:
           message: |
             Published new beta release: ${{ steps.get-package-version.outputs.version }}
