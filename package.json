@@ -17,6 +17,8 @@
   },
   "scripts": {
     "build": "tsc",
+    "prepack": "npm run build",
+    "package:lint": "publint",
     "example:build": "node build.js",
     "example:dev": "node build.js --dev",
     "test:e2e": "npm run example:dev & wait-on http://127.0.0.1:8000/; npx cypress run; kill %%",
@@ -35,6 +37,7 @@
     "lint-staged": "^15.2.5",
     "preact": "^10.19.6",
     "prettier": "^3.2.5",
+    "publint": "^0.2.8",
     "typescript": "^5.4.5",
     "wait-on": "^7.2.0"
   },
