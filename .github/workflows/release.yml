@@ -2,8 +2,8 @@ name: release
 
 on:
   push:
-    tags-ignore:
-      - '*-beta.*'
+    tags:
+      - 'v*.*.*'
 
 jobs:
   publish_beta:
@@ -24,12 +24,30 @@ jobs:
 
       - name: Compile
         run: npm run build
-      
+
+      - name: Get Package Version
+        id: get-package-version
+        uses: stevenbenitez/get-package-version-action@v1
+
       - name: Lint Package
         run: npm run package:lint
 
       - name: Publish
         run: |
-          npm publish
+          npm publish --tag unsure
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Tag Beta
+        if: 'contains("{{steps.get-package-version.outputs.version}}", "-beta")'
+        run: |
+          npm dist-tags add {{steps.get-package-version.outputs.version}} --tag beta
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Tag Release
+        if: "!(contains('{{steps.get-package-version.outputs.version}}','-beta'))"
+        run: |
+          npm dist-tags add {{steps.get-package-version.outputs.version}} --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
