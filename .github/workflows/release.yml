@@ -6,7 +6,7 @@ on:
       - 'v*.*.*'
 
 jobs:
-  publish_beta:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -39,15 +39,15 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Tag Beta
-        if: 'contains("${{steps.get-package-version.outputs.version}}", "-beta")'
+        if: ${{ contains(steps.get-package-version.outputs.version, "-beta") }}
         run: |
-          npm dist-tags add @preachjs/datepicker@${{steps.get-package-version.outputs.version}} --tag beta
+          npm dist-tags add @preachjs/datepicker@${{steps.get-package-version.outputs.version}} beta
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Tag Release
-        if: "!(contains('{{steps.get-package-version.outputs.version}}','-beta'))"
+        if: ${{ !contains(steps.get-package-version.outputs.version, "-beta") }}
         run: |
-          npm dist-tags add @preachjs/datepicker@{{steps.get-package-version.outputs.version}} --tag latest
+          npm dist-tags add @preachjs/datepicker@${{steps.get-package-version.outputs.version}} latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
