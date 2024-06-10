@@ -1,6 +1,6 @@
 {
   "name": "@preachjs/datepicker",
-  "version": "0.0.3-beta.3",
+  "version": "0.0.3-beta.4",
   "description": "Headless Datepickers for preact",
   "license": "MIT",
   "author": "reaper <ahoy@barelyhuman.dev>",
