@@ -1,31 +1,31 @@
-import esbuild from "esbuild";
+import esbuild from 'esbuild'
 
-const args = process.argv.slice();
-const isDev = args.includes("--dev");
+const args = process.argv.slice()
+const isDev = args.includes('--dev')
 
 const ctx = await esbuild.context({
-  entryPoints: ["./example/src/main.js"],
-  format: "esm",
+  entryPoints: ['./example/src/main.js'],
+  format: 'esm',
   bundle: true,
-  logLevel: "info",
-  platform: "browser",
-  outdir: "example/dist",
-  jsx: "automatic",
-  jsxImportSource: "preact",
+  logLevel: 'info',
+  platform: 'browser',
+  outdir: 'example/dist',
+  jsx: 'automatic',
+  jsxImportSource: 'preact',
   loader: {
-    ".js": "jsx",
+    '.js': 'jsx',
   },
-});
+})
 
 if (isDev) {
-  await ctx.watch();
+  await ctx.watch()
   setTimeout(() => {
     ctx.serve({
       port: 8000,
-      servedir: "./example",
-    });
-  }, 100);
+      servedir: './example',
+    })
+  }, 100)
 }
 
-await ctx.rebuild();
-!isDev && process.exit(0);
+await ctx.rebuild()
+!isDev && process.exit(0)
