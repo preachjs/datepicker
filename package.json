@@ -22,6 +22,7 @@
     "example:build": "node build.js",
     "example:dev": "node build.js --dev",
     "test:e2e": "npm run example:dev & wait-on http://127.0.0.1:8000/; npx cypress run; kill %%",
+    "test": "echo true",
     "next": "bumpp",
     "fix": "prettier --write .",
     "prepare": "husky install"
