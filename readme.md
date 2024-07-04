@@ -69,6 +69,7 @@ function App() {
 | `weekdayFormat` | `narrow,short,long` weekend format on the calendar header                                                         | `narrow`     |
 | `arrowLeft`     | Icon Rendered on the left of the month selector                                                                   | `&lt;`       |
 | `arrowRight`    | Icon Rendered on the right of the month selector                                                                  | `&gt;`       |
+| `readOnly`      | Change to readOnly mode, date selection will do nothing                                                           | `false`      |
 
 ## License
 

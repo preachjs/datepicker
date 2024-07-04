@@ -5,6 +5,7 @@ import './main.css'
 
 const mode = signal('single')
 const selectedDate = signal()
+const readOnly = signal(false)
 
 const App = () => {
   return (
@@ -33,9 +34,19 @@ const App = () => {
             />{' '}
             Range
           </label>
+          <label>
+            <input
+              name="read-only"
+              type="checkbox"
+              checked={readOnly}
+              onChange={e => (readOnly.value = e.target.checked)}
+            />{' '}
+            Read Only
+          </label>
         </div>
         <Calendar
           mode={mode.value}
+          readOnly={readOnly.value}
           value={selectedDate.value}
           onSelect={value => {
             selectedDate.value = value

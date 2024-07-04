@@ -2,6 +2,8 @@
 
 # Pending
 
+- Datepicker can be set to be readOnly
+
 # 0.0.4-beta.1
 
 - Fix where the types are inferred from from users -

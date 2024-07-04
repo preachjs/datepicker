@@ -143,6 +143,25 @@ body {
 .preachjs-calendar
   .preachjs-calendar--grid
   .preachjs-calendar--grid-body
+  .preachjs-calendar--grid-cell.read-only
+  button:hover,
+.preachjs-calendar
+  .preachjs-calendar--grid
+  .preachjs-calendar--grid-body
+  .preachjs-calendar--grid-cell.read-only
+  button:focus,
+.preachjs-calendar
+  .preachjs-calendar--grid
+  .preachjs-calendar--grid-body
+  .preachjs-calendar--grid-cell.active.read-only
+  button {
+  color: inherit;
+  background: inherit;
+}
+
+.preachjs-calendar
+  .preachjs-calendar--grid
+  .preachjs-calendar--grid-body
   .preachjs-calendar--grid-cell.preachjs-calendar--grid-cell-start,
 .preachjs-calendar
   .preachjs-calendar--grid

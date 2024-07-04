@@ -18,6 +18,7 @@ export function Calendar({
   mode = 'single',
   onSelect = () => {},
   locale = 'en-gb',
+  readOnly = false,
   weekdayFormat = 'narrow',
   arrowLeft: ArrowLeft = () => <>&lt;</>,
   arrowRight: ArrowRight = () => <>&gt;</>,
@@ -76,8 +77,8 @@ export function Calendar({
     <div class="preachjs-calendar">
       <div class="preachjs-calendar--header">
         <button
-          tabIndex={1}
           aria-label="Previous"
+          tabIndex={1}
           onClick={() => {
             const curr = new Date(activeDate$.value)
             curr.setMonth(curr.getMonth() - 1)
@@ -88,8 +89,8 @@ export function Calendar({
         </button>
         <h2 aria-hidden="true">{getMonthAndYearFromDate(activeDate$.value)}</h2>
         <button
-          tabIndex={2}
           aria-label="Next"
+          tabIndex={1}
           onClick={() => {
             const curr = new Date(activeDate$.value)
             curr.setMonth(curr.getMonth() + 1)
@@ -103,7 +104,6 @@ export function Calendar({
         class="preachjs-calendar--grid"
         role="grid"
         autofocus={true}
-        tabIndex={3}
         aria-label={getMonthAndYearFromDate(activeDate$.value)}
       >
         <thead class="preachjs-calendar--grid-header">
@@ -146,6 +146,7 @@ export function Calendar({
 
                   const gridCellStyles = [
                     'preachjs-calendar--grid-cell',
+                    readOnly && 'read-only',
                     isDateActive && 'active',
                     isRangeStart && 'preachjs-calendar--grid-cell-start',
                     isInRange && 'preachjs-calendar--grid-cell-in-range',
@@ -184,6 +185,7 @@ export function Calendar({
                     >
                       <button
                         onClick={() => {
+                          if (readOnly) return
                           selecting.current = true
                           if (mode == 'single') {
                             onSelect(dateItem.date)
@@ -245,7 +247,6 @@ function createKeypressHandler(mode) {
       const CellTarget = isParentCell ? e.target.parentNode : e.target
       const currentRow = +CellTarget.dataset.row
       const currentCol = +CellTarget.dataset.col
-      console.log({ k: e.key })
       switch (e.key) {
         case 'ArrowDown': {
           const elem = e.target

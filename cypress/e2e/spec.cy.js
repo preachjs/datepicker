@@ -1,4 +1,21 @@
 describe('basic', () => {
+  it('should not change in readOnlyMode', function () {
+    cy.visit('localhost:8000')
+
+    let content = cy.get('.selected-text')
+    content.should('have.text', 'Selected: None')
+
+    // Switch to read only mode
+    cy.get('[name=read-only]').click()
+
+    // make a selection
+    cy.get('[data-row="1"][data-col="1"] > button').click()
+
+    // Nothing should be selected
+    content = cy.get('.selected-text')
+    content.should('have.text', 'Selected: None')
+  })
+
   it('Switch between modes', function () {
     cy.visit('localhost:8000')
 

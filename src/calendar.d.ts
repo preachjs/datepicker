@@ -14,5 +14,6 @@ export type CalendarProps<M extends CalendarMode = CalendarMode> = {
   arrowLeft?: () => any
   arrowRight?: () => any
   mode?: M
+  readOnly: boolean
   onSelect?: (nextValue: CalendarValue<M>) => void
 }
