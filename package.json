@@ -21,7 +21,7 @@
     "package:lint": "publint",
     "example:build": "node build.js",
     "example:dev": "node build.js --dev",
-    "test:e2e": "npm run example:dev & wait-on http://127.0.0.1:8000/; npx cypress run; kill %%",
+    "test:e2e": "node ./script/e2e-run.js",
     "test": "echo true",
     "next": "bumpp",
     "fix": "prettier --write .",
