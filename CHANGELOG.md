@@ -1,5 +1,7 @@
 ## Changelog
 
+# Pending
+
 # 0.0.4-beta.1
 
 - Fix where the types are inferred from from users -
