@@ -150,11 +150,7 @@ body {
   .preachjs-calendar--grid-body
   .preachjs-calendar--grid-cell.read-only
   button:focus,
-.preachjs-calendar
-  .preachjs-calendar--grid
-  .preachjs-calendar--grid-body
-  .preachjs-calendar--grid-cell.active.read-only
-  button {
+button {
   color: inherit;
   background: inherit;
 }
