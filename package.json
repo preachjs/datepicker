@@ -2,6 +2,12 @@
   "name": "@preachjs/datepicker",
   "version": "0.0.4",
   "description": "Headless Datepickers for preact",
+  "keywords": [
+    "datepicker",
+    "preact",
+    "headless",
+    "minimal"
+  ],
   "license": "MIT",
   "author": "reaper <ahoy@barelyhuman.dev>",
   "type": "module",

@@ -1,4 +1,10 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
+  padding: 1em;
   font-family:
     -apple-system,
     BlinkMacSystemFont,
@@ -15,9 +21,74 @@ body {
     sans-serif;
 }
 
+a {
+  color: black;
+}
+
+/* Header */
+header a {
+  text-decoration: none;
+  font-size: 1.125em;
+}
+
+header a:hover {
+  text-decoration: underline;
+}
+
+header .overlay,
+nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+header {
+  background: white;
+  height: 52px;
+}
+
+.home {
+  font-weight: bold;
+  margin-right: 3ch;
+}
+
+nav {
+  gap: 1.5ch;
+}
+
+nav a {
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+/* Install code block */
+.code-block {
+  white-space: pre-wrap;
+  background: #f1f3f5;
+  padding: 1em;
+  border-radius: 4px;
+}
+
+/* Utils */
+.m1 {
+  margin: 1em;
+}
+
+.mx1 {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.my1 {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
 #app {
   max-width: 80ch;
-  min-height: 100vh;
+  min-height: 70vh;
   margin: 0 auto;
 }
 
