@@ -10,6 +10,7 @@ import {
 } from './utils.js'
 
 const YEAR_RANGE_OFFSET = 100
+const YEAR_OPTION_COUNT = YEAR_RANGE_OFFSET * 2 + 1
 
 /**
  * @param {import("./calendar").CalendarProps} props
@@ -83,7 +84,7 @@ export function Calendar({
       label: monthLabel.format(new Date(2000, monthIndex, 1)),
     }
   })
-  const yearOptions = new Array(YEAR_RANGE_OFFSET * 2 + 1)
+  const yearOptions = new Array(YEAR_OPTION_COUNT)
     .fill(null)
     .map((_, offset) => yearInView - YEAR_RANGE_OFFSET + offset)
 
@@ -107,16 +108,10 @@ export function Calendar({
             aria-label="Select month"
             value={String(monthInView)}
             onChange={e => {
-              const nextDate = new Date(activeDate$.value)
-              const currentDay = nextDate.getDate()
               const nextMonth = +e.target.value
-              const nextYear = nextDate.getFullYear()
-              const nextDay = Math.min(
-                currentDay,
-                getDaysInMonth(nextMonth, nextYear)
-              )
-              nextDate.setFullYear(nextYear, nextMonth, nextDay)
-              activeDate$.value = nextDate
+              activeDate$.value = updateDateFromParts(activeDate$.value, {
+                month: nextMonth,
+              })
             }}
           >
             {monthOptions.map(month => (
@@ -128,16 +123,10 @@ export function Calendar({
             aria-label="Select year"
             value={String(yearInView)}
             onChange={e => {
-              const nextDate = new Date(activeDate$.value)
-              const currentDay = nextDate.getDate()
               const nextYear = +e.target.value
-              const nextMonth = nextDate.getMonth()
-              const nextDay = Math.min(
-                currentDay,
-                getDaysInMonth(nextMonth, nextYear)
-              )
-              nextDate.setFullYear(nextYear, nextMonth, nextDay)
-              activeDate$.value = nextDate
+              activeDate$.value = updateDateFromParts(activeDate$.value, {
+                year: nextYear,
+              })
             }}
           >
             {yearOptions.map(year => (
@@ -386,4 +375,16 @@ function mergeStyle(arr, ...additional) {
 
 function getDaysInMonth(monthIndex, year) {
   return new Date(year, monthIndex + 1, 0).getDate()
+}
+
+function updateDateFromParts(sourceDate, nextValue) {
+  const nextDate = new Date(sourceDate)
+  const nextMonth = nextValue.month ?? nextDate.getMonth()
+  const nextYear = nextValue.year ?? nextDate.getFullYear()
+  const nextDay = Math.min(
+    nextDate.getDate(),
+    getDaysInMonth(nextMonth, nextYear)
+  )
+  nextDate.setFullYear(nextYear, nextMonth, nextDay)
+  return nextDate
 }
