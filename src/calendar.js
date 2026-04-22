@@ -4,7 +4,6 @@ import {
   getWeekdayList,
   generateListOfDaysForMonthAndYear,
   getMonthAndYearFromDate,
-  getDaysOfMonthAndYear,
   formatToReadableDate,
   getDatesInRange,
   sortByDate,
@@ -114,7 +113,7 @@ export function Calendar({
               const nextYear = nextDate.getFullYear()
               const nextDay = Math.min(
                 currentDay,
-                getDaysOfMonthAndYear(nextMonth + 1, nextYear)
+                getDaysInMonth(nextMonth, nextYear)
               )
               nextDate.setFullYear(nextYear, nextMonth, nextDay)
               activeDate$.value = nextDate
@@ -135,7 +134,7 @@ export function Calendar({
               const nextMonth = nextDate.getMonth()
               const nextDay = Math.min(
                 currentDay,
-                getDaysOfMonthAndYear(nextMonth + 1, nextYear)
+                getDaysInMonth(nextMonth, nextYear)
               )
               nextDate.setFullYear(nextYear, nextMonth, nextDay)
               activeDate$.value = nextDate
@@ -383,4 +382,8 @@ function tieHoveredElmToSignal(window, sign$) {
 
 function mergeStyle(arr, ...additional) {
   return additional.filter(Boolean).concat(arr.filter(Boolean)).join(' ')
+}
+
+function getDaysInMonth(monthIndex, year) {
+  return new Date(year, monthIndex + 1, 0).getDate()
 }

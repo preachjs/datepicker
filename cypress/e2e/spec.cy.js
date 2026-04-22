@@ -66,6 +66,7 @@ describe('basic', () => {
   it('changes month and year from dropdowns', function () {
     cy.visit('localhost:8000')
 
+    // Months are 0-indexed: 10 => November
     cy.get('.preachjs-calendar--header-month').select('10')
     cy.get('.preachjs-calendar--header-year').select('2030')
 
