@@ -10,6 +10,8 @@ import {
   sortByDate,
 } from './utils.js'
 
+const YEAR_RANGE_OFFSET = 100
+
 /**
  * @param {import("./calendar").CalendarProps} props
  * @returns
@@ -82,9 +84,9 @@ export function Calendar({
       label: monthLabel.format(new Date(2000, monthIndex, 1)),
     }
   })
-  const yearOptions = new Array(201)
+  const yearOptions = new Array(YEAR_RANGE_OFFSET * 2 + 1)
     .fill(null)
-    .map((_, offset) => yearInView - 100 + offset)
+    .map((_, offset) => yearInView - YEAR_RANGE_OFFSET + offset)
 
   return (
     <div class="preachjs-calendar">
@@ -107,13 +109,14 @@ export function Calendar({
             value={String(monthInView)}
             onChange={e => {
               const nextDate = new Date(activeDate$.value)
+              const currentDay = nextDate.getDate()
               const nextMonth = +e.target.value
+              const nextYear = nextDate.getFullYear()
               const nextDay = Math.min(
-                nextDate.getDate(),
-                getDaysOfMonthAndYear(nextMonth + 1, nextDate.getFullYear())
+                currentDay,
+                getDaysOfMonthAndYear(nextMonth + 1, nextYear)
               )
-              nextDate.setDate(nextDay)
-              nextDate.setMonth(nextMonth)
+              nextDate.setFullYear(nextYear, nextMonth, nextDay)
               activeDate$.value = nextDate
             }}
           >
@@ -127,13 +130,14 @@ export function Calendar({
             value={String(yearInView)}
             onChange={e => {
               const nextDate = new Date(activeDate$.value)
+              const currentDay = nextDate.getDate()
               const nextYear = +e.target.value
+              const nextMonth = nextDate.getMonth()
               const nextDay = Math.min(
-                nextDate.getDate(),
-                getDaysOfMonthAndYear(nextDate.getMonth() + 1, nextYear)
+                currentDay,
+                getDaysOfMonthAndYear(nextMonth + 1, nextYear)
               )
-              nextDate.setDate(nextDay)
-              nextDate.setFullYear(nextYear)
+              nextDate.setFullYear(nextYear, nextMonth, nextDay)
               activeDate$.value = nextDate
             }}
           >
