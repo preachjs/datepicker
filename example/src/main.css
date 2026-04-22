@@ -153,6 +153,21 @@ nav a {
   font-weight: 600;
 }
 
+.preachjs-calendar
+  .preachjs-calendar--header
+  .preachjs-calendar--header-selectors {
+  display: flex;
+  gap: 6px;
+}
+
+.preachjs-calendar .preachjs-calendar--header select {
+  border: 1px solid #efefef;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 14px;
+  background-color: white;
+}
+
 .preachjs-calendar .preachjs-calendar--grid {
   width: 100%;
   border-collapse: collapse;

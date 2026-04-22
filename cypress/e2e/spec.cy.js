@@ -62,4 +62,17 @@ describe('basic', () => {
       .should('have.css', 'background-color')
       .and('match', /(rgb\(0, 0, 0\))/)
   })
+
+  it('changes month and year from dropdowns', function () {
+    cy.visit('localhost:8000')
+
+    cy.get('.preachjs-calendar--header-month').select('10')
+    cy.get('.preachjs-calendar--header-year').select('2030')
+
+    cy.get('.preachjs-calendar--grid').should(
+      'have.attr',
+      'aria-label',
+      'Nov 2030'
+    )
+  })
 })

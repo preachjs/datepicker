@@ -4,6 +4,7 @@ import {
   getWeekdayList,
   generateListOfDaysForMonthAndYear,
   getMonthAndYearFromDate,
+  getDaysOfMonthAndYear,
   formatToReadableDate,
   getDatesInRange,
   sortByDate,
@@ -72,6 +73,18 @@ export function Calendar({
   })
 
   let tabIndexOffset = 3
+  const monthLabel = new Intl.DateTimeFormat(locale, { month: 'long' })
+  const yearInView = activeDate$.value.getFullYear()
+  const monthInView = activeDate$.value.getMonth()
+  const monthOptions = new Array(12).fill(null).map((_, monthIndex) => {
+    return {
+      value: monthIndex,
+      label: monthLabel.format(new Date(2000, monthIndex, 1)),
+    }
+  })
+  const yearOptions = new Array(201)
+    .fill(null)
+    .map((_, offset) => yearInView - 100 + offset)
 
   return (
     <div class="preachjs-calendar">
@@ -87,7 +100,48 @@ export function Calendar({
         >
           <ArrowLeft />
         </button>
-        <h2 aria-hidden="true">{getMonthAndYearFromDate(activeDate$.value)}</h2>
+        <div class="preachjs-calendar--header-selectors">
+          <select
+            class="preachjs-calendar--header-month"
+            aria-label="Select month"
+            value={String(monthInView)}
+            onChange={e => {
+              const nextDate = new Date(activeDate$.value)
+              const nextMonth = +e.target.value
+              const nextDay = Math.min(
+                nextDate.getDate(),
+                getDaysOfMonthAndYear(nextMonth + 1, nextDate.getFullYear())
+              )
+              nextDate.setDate(nextDay)
+              nextDate.setMonth(nextMonth)
+              activeDate$.value = nextDate
+            }}
+          >
+            {monthOptions.map(month => (
+              <option value={String(month.value)}>{month.label}</option>
+            ))}
+          </select>
+          <select
+            class="preachjs-calendar--header-year"
+            aria-label="Select year"
+            value={String(yearInView)}
+            onChange={e => {
+              const nextDate = new Date(activeDate$.value)
+              const nextYear = +e.target.value
+              const nextDay = Math.min(
+                nextDate.getDate(),
+                getDaysOfMonthAndYear(nextDate.getMonth() + 1, nextYear)
+              )
+              nextDate.setDate(nextDay)
+              nextDate.setFullYear(nextYear)
+              activeDate$.value = nextDate
+            }}
+          >
+            {yearOptions.map(year => (
+              <option value={String(year)}>{year}</option>
+            ))}
+          </select>
+        </div>
         <button
           aria-label="Next"
           tabIndex={1}
