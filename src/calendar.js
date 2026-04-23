@@ -9,6 +9,9 @@ import {
   sortByDate,
 } from './utils.js'
 
+const YEAR_RANGE_OFFSET = 100
+const YEAR_OPTION_COUNT = YEAR_RANGE_OFFSET * 2 + 1
+
 /**
  * @param {import("./calendar").CalendarProps} props
  * @returns
@@ -72,6 +75,18 @@ export function Calendar({
   })
 
   let tabIndexOffset = 3
+  const monthLabel = new Intl.DateTimeFormat(locale, { month: 'long' })
+  const yearInView = activeDate$.value.getFullYear()
+  const monthInView = activeDate$.value.getMonth()
+  const monthOptions = new Array(12).fill(null).map((_, monthIndex) => {
+    return {
+      value: monthIndex,
+      label: monthLabel.format(new Date(2000, monthIndex, 1)),
+    }
+  })
+  const yearOptions = new Array(YEAR_OPTION_COUNT)
+    .fill(null)
+    .map((_, offset) => yearInView - YEAR_RANGE_OFFSET + offset)
 
   return (
     <div class="preachjs-calendar">
@@ -87,7 +102,38 @@ export function Calendar({
         >
           <ArrowLeft />
         </button>
-        <h2 aria-hidden="true">{getMonthAndYearFromDate(activeDate$.value)}</h2>
+        <div class="preachjs-calendar--header-selectors">
+          <select
+            class="preachjs-calendar--header-month"
+            aria-label="Select month"
+            value={String(monthInView)}
+            onChange={e => {
+              const nextMonth = +e.target.value
+              activeDate$.value = updateDateFromParts(activeDate$.value, {
+                month: nextMonth,
+              })
+            }}
+          >
+            {monthOptions.map(month => (
+              <option value={String(month.value)}>{month.label}</option>
+            ))}
+          </select>
+          <select
+            class="preachjs-calendar--header-year"
+            aria-label="Select year"
+            value={String(yearInView)}
+            onChange={e => {
+              const nextYear = +e.target.value
+              activeDate$.value = updateDateFromParts(activeDate$.value, {
+                year: nextYear,
+              })
+            }}
+          >
+            {yearOptions.map(year => (
+              <option value={String(year)}>{year}</option>
+            ))}
+          </select>
+        </div>
         <button
           aria-label="Next"
           tabIndex={1}
@@ -325,4 +371,20 @@ function tieHoveredElmToSignal(window, sign$) {
 
 function mergeStyle(arr, ...additional) {
   return additional.filter(Boolean).concat(arr.filter(Boolean)).join(' ')
+}
+
+function getDaysInMonth(monthIndex, year) {
+  return new Date(year, monthIndex + 1, 0).getDate()
+}
+
+function updateDateFromParts(sourceDate, nextValue) {
+  const nextDate = new Date(sourceDate)
+  const nextMonth = nextValue.month ?? nextDate.getMonth()
+  const nextYear = nextValue.year ?? nextDate.getFullYear()
+  const nextDay = Math.min(
+    nextDate.getDate(),
+    getDaysInMonth(nextMonth, nextYear)
+  )
+  nextDate.setFullYear(nextYear, nextMonth, nextDay)
+  return nextDate
 }
