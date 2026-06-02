@@ -76,4 +76,105 @@ describe('basic', () => {
       'Nov 2030'
     )
   })
+
+  it('should disable dates before min', function () {
+    cy.visit('localhost:8000')
+
+    const today = new Date()
+    const tomorrow = new Date(today)
+    tomorrow.setDate(today.getDate() + 1)
+
+    const formatDateInput = date => {
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      return `${year}-${month}-${day}`
+    }
+
+    cy.get('input[name="min"]')
+      .invoke('val', formatDateInput(tomorrow))
+      .trigger('change')
+
+    const todayISO = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    ).toISOString()
+    cy.get(`[data-date="${todayISO}"]`).should(
+      'have.class',
+      'preachjs-calendar--grid-cell-disabled'
+    )
+    cy.get(`[data-date="${todayISO}"] > button`).click({ force: true })
+
+    cy.get('.selected-text').should('have.text', 'Selected: None')
+  })
+
+  it('should disable dates after max', function () {
+    cy.visit('localhost:8000')
+
+    const today = new Date()
+    const yesterday = new Date(today)
+    yesterday.setDate(today.getDate() - 1)
+
+    const formatDateInput = date => {
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      return `${year}-${month}-${day}`
+    }
+
+    cy.get('input[name="max"]')
+      .invoke('val', formatDateInput(yesterday))
+      .trigger('change')
+
+    const todayISO = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    ).toISOString()
+    cy.get(`[data-date="${todayISO}"]`).should(
+      'have.class',
+      'preachjs-calendar--grid-cell-disabled'
+    )
+    cy.get(`[data-date="${todayISO}"] > button`).click({ force: true })
+
+    cy.get('.selected-text').should('have.text', 'Selected: None')
+  })
+
+  it('should allow selection within min and max', function () {
+    cy.visit('localhost:8000')
+
+    const today = new Date()
+    const yesterday = new Date(today)
+    yesterday.setDate(today.getDate() - 1)
+    const tomorrow = new Date(today)
+    tomorrow.setDate(today.getDate() + 1)
+
+    const formatDateInput = date => {
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      return `${year}-${month}-${day}`
+    }
+
+    cy.get('input[name="min"]')
+      .invoke('val', formatDateInput(yesterday))
+      .trigger('change')
+    cy.get('input[name="max"]')
+      .invoke('val', formatDateInput(tomorrow))
+      .trigger('change')
+
+    const todayISO = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    ).toISOString()
+    cy.get(`[data-date="${todayISO}"]`).should(
+      'not.have.class',
+      'preachjs-calendar--grid-cell-disabled'
+    )
+    cy.get(`[data-date="${todayISO}"] > button`).click()
+
+    cy.get('.selected-text').should('not.have.text', 'Selected: None')
+  })
 })

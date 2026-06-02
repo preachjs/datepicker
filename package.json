@@ -27,7 +27,7 @@
     "package:lint": "publint",
     "example:build": "node build.js",
     "example:dev": "node build.js --dev",
-    "test:e2e": "node ./script/e2e-run.js",
+    "test:e2e": "node ./scripts/e2e-run.js",
     "test": "echo true",
     "next": "bumpp",
     "fix": "prettier --write .",

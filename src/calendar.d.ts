@@ -16,4 +16,6 @@ export type CalendarProps<M extends CalendarMode = CalendarMode> = {
   mode?: M
   readOnly: boolean
   onSelect?: (nextValue: CalendarValue<M>) => void
+  min?: Date
+  max?: Date
 }
