@@ -244,6 +244,15 @@ button {
 .preachjs-calendar
   .preachjs-calendar--grid
   .preachjs-calendar--grid-body
+  .preachjs-calendar--grid-cell-disabled
+  button {
+  color: #adb5bd;
+  cursor: not-allowed;
+}
+
+.preachjs-calendar
+  .preachjs-calendar--grid
+  .preachjs-calendar--grid-body
   .preachjs-calendar--grid-cell.preachjs-calendar--grid-cell-start,
 .preachjs-calendar
   .preachjs-calendar--grid

@@ -385,9 +385,22 @@ function getDaysInMonth(monthIndex, year) {
   return new Date(year, monthIndex + 1, 0).getDate()
 }
 
+function normalizeDate(date) {
+  const d = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
 function isOutOfRange(date, min, max) {
-  if (min && date.getTime() < min.getTime()) return true
-  if (max && date.getTime() > max.getTime()) return true
+  const d = normalizeDate(date)
+  if (min) {
+    const m = normalizeDate(min)
+    if (d.getTime() <= m.getTime()) return true
+  }
+  if (max) {
+    const m = normalizeDate(max)
+    if (d.getTime() >= m.getTime()) return true
+  }
   return false
 }
 
