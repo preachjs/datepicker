@@ -70,6 +70,8 @@ function App() {
 | `arrowLeft`     | Icon Rendered on the left of the month selector                                                                   | `&lt;`       |
 | `arrowRight`    | Icon Rendered on the right of the month selector                                                                  | `&gt;`       |
 | `readOnly`      | Change to readOnly mode, date selection will do nothing                                                           | `false`      |
+| `min`           | Minimum selectable date (inclusive)                                                                               |              |
+| `max`           | Maximum selectable date (inclusive)                                                                               |              |
 
 ## License
 

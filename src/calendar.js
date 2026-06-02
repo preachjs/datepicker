@@ -25,6 +25,8 @@ export function Calendar({
   weekdayFormat = 'narrow',
   arrowLeft: ArrowLeft = () => <>&lt;</>,
   arrowRight: ArrowRight = () => <>&gt;</>,
+  min = undefined,
+  max = undefined,
 }) {
   const selecting = useRef(false)
   const refRange$ = useSignal([])
@@ -199,12 +201,18 @@ export function Calendar({
                     isRangeEnd && 'preachjs-calendar--grid-cell-end',
                   ]
 
-                  if (dateItem.previousMonth || dateItem.nextMonth) {
+                  const isDisabled =
+                    dateItem.previousMonth ||
+                    dateItem.nextMonth ||
+                    isOutOfRange(dateItem.date, min, max)
+
+                  if (isDisabled) {
                     return (
                       <td
                         role="gridcell"
                         data-row={rowIndex}
                         data-col={colIndex}
+                        data-date={dateItem.date.toISOString()}
                         aria-disabled="true"
                         class={mergeStyle(
                           gridCellStyles,
@@ -375,6 +383,12 @@ function mergeStyle(arr, ...additional) {
 
 function getDaysInMonth(monthIndex, year) {
   return new Date(year, monthIndex + 1, 0).getDate()
+}
+
+function isOutOfRange(date, min, max) {
+  if (min && date.getTime() < min.getTime()) return true
+  if (max && date.getTime() > max.getTime()) return true
+  return false
 }
 
 function updateDateFromParts(sourceDate, nextValue) {

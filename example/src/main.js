@@ -6,6 +6,22 @@ import './main.css'
 const mode = signal('single')
 const selectedDate = signal()
 const readOnly = signal(false)
+const minDate = signal()
+const maxDate = signal()
+
+function parseDateInput(value) {
+  if (!value) return undefined
+  const [year, month, day] = value.split('-').map(Number)
+  return new Date(year, month - 1, day)
+}
+
+function formatDateInput(date) {
+  if (!date) return ''
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
 
 const App = () => {
   return (
@@ -43,11 +59,35 @@ const App = () => {
             />{' '}
             Read Only
           </label>
+          <label>
+            Min{' '}
+            <input
+              name="min"
+              type="date"
+              value={formatDateInput(minDate.value)}
+              onChange={e => {
+                minDate.value = parseDateInput(e.target.value)
+              }}
+            />
+          </label>
+          <label>
+            Max{' '}
+            <input
+              name="max"
+              type="date"
+              value={formatDateInput(maxDate.value)}
+              onChange={e => {
+                maxDate.value = parseDateInput(e.target.value)
+              }}
+            />
+          </label>
         </div>
         <Calendar
           mode={mode.value}
           readOnly={readOnly.value}
           value={selectedDate.value}
+          min={minDate.value}
+          max={maxDate.value}
           onSelect={value => {
             selectedDate.value = value
           }}
