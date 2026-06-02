@@ -22,7 +22,7 @@ jobs:
           package-manager-cache: false 
 
       - name: Install dependencies 
-        run: npm ci 
+        run: npm i -g npm@latest && npm ci 
       - name: Test 
         run: npm run test 
       - name: Compile 
