@@ -1,15 +1,20 @@
-name: Cypress Tests
+name: Playwright Tests
 
 on: push
 
 jobs:
-  cypress-run:
+  playwright-run:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          build: npm run example:build
-          start: npm run example:dev
+          node-version: lts/*
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        run: npx playwright test
