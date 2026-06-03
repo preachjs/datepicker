@@ -27,6 +27,7 @@ export function Calendar({
   arrowRight: ArrowRight = () => <>&gt;</>,
   min = undefined,
   max = undefined,
+  highlightToday = false,
 }) {
   const selecting = useRef(false)
   const refRange$ = useSignal([])
@@ -192,6 +193,10 @@ export function Calendar({
                     }
                   }
 
+                  const isToday =
+                    highlightToday &&
+                    dateItem.date.toDateString() === new Date().toDateString()
+
                   const gridCellStyles = [
                     'preachjs-calendar--grid-cell',
                     readOnly && 'read-only',
@@ -199,6 +204,7 @@ export function Calendar({
                     isRangeStart && 'preachjs-calendar--grid-cell-start',
                     isInRange && 'preachjs-calendar--grid-cell-in-range',
                     isRangeEnd && 'preachjs-calendar--grid-cell-end',
+                    isToday && 'preachjs-calendar--grid-cell-today',
                   ]
 
                   const isDisabled =

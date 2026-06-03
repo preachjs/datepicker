@@ -18,4 +18,5 @@ export type CalendarProps<M extends CalendarMode = CalendarMode> = {
   onSelect?: (nextValue: CalendarValue<M>) => void
   min?: Date
   max?: Date
+  highlightToday?: boolean
 }

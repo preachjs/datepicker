@@ -176,4 +176,29 @@ test.describe('basic', () => {
       'Selected: None'
     )
   })
+
+  test('should highlight today when highlightToday is enabled', async ({
+    page,
+  }) => {
+    await page.goto('/')
+
+    const today = new Date()
+    const todayISO = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    ).toISOString()
+
+    // Highlight today should be enabled by default
+    await expect(page.locator(`[data-date="${todayISO}"]`)).toHaveClass(
+      /preachjs-calendar--grid-cell-today/
+    )
+
+    // Toggle off highlight today
+    await page.locator('[name="highlight-today"]').click()
+
+    await expect(page.locator(`[data-date="${todayISO}"]`)).not.toHaveClass(
+      /preachjs-calendar--grid-cell-today/
+    )
+  })
 })

@@ -278,6 +278,14 @@ button {
 .preachjs-calendar
   .preachjs-calendar--grid
   .preachjs-calendar--grid-body
+  .preachjs-calendar--grid-cell.preachjs-calendar--grid-cell-today
+  button {
+  border: 1px solid black;
+}
+
+.preachjs-calendar
+  .preachjs-calendar--grid
+  .preachjs-calendar--grid-body
   .preachjs-calendar--grid-cell.preachjs-calendar--grid-cell-end,
 .preachjs-calendar
   .preachjs-calendar--grid
