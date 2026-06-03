@@ -8,6 +8,7 @@ const selectedDate = signal()
 const readOnly = signal(false)
 const minDate = signal()
 const maxDate = signal()
+const highlightToday = signal(true)
 
 function parseDateInput(value) {
   if (!value) return undefined
@@ -81,6 +82,15 @@ const App = () => {
               }}
             />
           </label>
+          <label>
+            <input
+              name="highlight-today"
+              type="checkbox"
+              checked={highlightToday.value}
+              onChange={e => (highlightToday.value = e.target.checked)}
+            />{' '}
+            Highlight Today
+          </label>
         </div>
         <Calendar
           mode={mode.value}
@@ -88,6 +98,7 @@ const App = () => {
           value={selectedDate.value}
           min={minDate.value}
           max={maxDate.value}
+          highlightToday={highlightToday.value}
           onSelect={value => {
             selectedDate.value = value
           }}
